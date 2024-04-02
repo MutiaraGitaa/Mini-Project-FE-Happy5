@@ -1,27 +1,52 @@
-const matchList = [["mu", "city"],["munchen", "mu"],["city", "munchen"]]
-
-const resultMatch = [1, 0, 1];
-
 const generateWinner = () => {
-    const scores = {
-        mu: 0,
-        city: 0,
-        munchen: 0
-    }
+
+    const matchList = [
+        ["mu", "city"],
+        ["munchen", "mu"],
+        ["city", "munchen"]
+    ]
+
+    const resultMatch = [1, 0, 1]
+    let muPoints = 0;
+    let cityPoints = 0;
+    let munchenPoints = 0;
+
 
     for (let i = 0; i < matchList.length; i++) {
-        const [home, away] = matchList[i];
-
-        if (home > away) scores[home] += 3;
-        else if (home < away) scores[away] += 3;
-        else scores[i] += 1
+        if (matchList[i][1] === 'mu') {
+            if (resultMatch[i] === 1) {
+                muPoints += 3;
+            }
+            if (resultMatch[i] === 0) {
+                cityPoints += 3;
+            }
+        }
+        if (matchList[i][0] === 'munchen') {
+            if (resultMatch[i] === 1) {
+                muPoints += 3;
+            }
+            if (resultMatch[i] === 0) {
+                munchenPoints += 3;
+            }
+        }
+        if (matchList[i][1] === 'munchen') {
+            if (resultMatch[i] === 1) {
+                munchenPoints += 3;
+            }
+            if (resultMatch[i] === 0) {
+                cityPoints += 3;
+            }
+        }
     }
 
-    const result = Object.values(scores);
-    const winningScore = Math.max(...result)
+    console.log(`${muPoints} ${munchenPoints} ${cityPoints}`)
 
-    return Object.keys(scores).filter(team => scores[team] === winningScore)[0]
+    if (munchenPoints > Math.max(muPoints, cityPoints)) {
+        return 'munchen';
+    }
+    else return Math.max(muPoints, cityPoints) === muPoints ? 'mu' : 'city';
+
 }
 
 const winner = generateWinner();
-console.log(winner);
+console.log(winner)
